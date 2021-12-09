@@ -1,9 +1,10 @@
+import GameBoard from "./Components/GameBoard";
 
 
 function App() {
   return (
     <div className="App">
-      app
+      <GameBoard />
     </div>
   );
 }
