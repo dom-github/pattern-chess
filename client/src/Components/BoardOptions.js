@@ -3,7 +3,8 @@ import styled from "styled-components";
 const BoardOptions = ({
     showBlkCtrl,
     showWhtCtrl,
-    setShowBlkCtrl, setShowWhtCtrl}) => {
+    setShowBlkCtrl, 
+    setShowWhtCtrl}) => {
 
     return (<>
         <Options>
@@ -16,7 +17,7 @@ const BoardOptions = ({
 }
 
 const Options = styled.div`
-    border: 3px solid whitesmoke;
+    border: 1px solid whitesmoke;
     margin-top: 20px;
     width: 25vw;
     height: auto;

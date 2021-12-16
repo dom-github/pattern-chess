@@ -15,7 +15,6 @@ const MoveHistory = ({moveHistory, setFen}) => {
     const pieces = "bknpqrBKNPQR";
     const pieceChars = "♗♔♘♙♕♖♝♚♞♟♛♜"
 
-    console.log("History:", moveHistory)
     // chess piece characters 
     // ♜	♞	♝	♛	♚	♝	♞	♜
     // ♟	♟	♟	♟	♟	♟	♟	♟

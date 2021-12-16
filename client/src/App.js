@@ -28,6 +28,7 @@ function App() {
         moveHistory={moveHistory}
         showBlkCtrl={showBlkCtrl}
         showWhtCtrl={showWhtCtrl}
+        
           />
         <Info>
           <GameInfo setFen={setFen} moveHistory={moveHistory}/>
@@ -45,6 +46,7 @@ function App() {
   );
 }
 
+
 const Page = styled.div`
   margin: 0;
   margin-top: 40px;
@@ -60,6 +62,7 @@ const Info = styled.div`
   display: flex;
   flex-direction: column;
   position: relative;
+  font-size: larger;
 `
 
 export default App;

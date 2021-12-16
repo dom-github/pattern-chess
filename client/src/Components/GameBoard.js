@@ -23,18 +23,20 @@ import { algebraic } from "../Functions/utils";
 // k = kingb K = kingw
 // p = pawnb P = pawnw
 
-const GameBoard = ({fen, setFen, moveHistory,
-    
+const GameBoard = ({
+    fen, 
+    setFen, 
+    moveHistory,    
     showBlkCtrl,
-    showWhtCtrl,
-    showCheckerboard}) => {
+    showWhtCtrl
+    }) => {
 
     const [selected, setSelected] = useState();
 
     const clickSquare = (ev) => {
         //prints the info stored in the clicked square
         const square = board[ev.target.id]
-        console.log(square, ev.target.id, selected);
+
         if (selected) {
             const piece = selected.piece;
             const color = selected.pieceColor;
@@ -42,7 +44,6 @@ const GameBoard = ({fen, setFen, moveHistory,
             
             if (selected.hexId !== parseInt(ev.target.id)) {
                 const newHistory = submitMove(board, selected.hexId, ev.target.id, piece, color, moveSAN, moveHistory)
-                console.log(newHistory)
                 setFen(newHistory);
             }
             setSelected();
@@ -57,10 +58,6 @@ const GameBoard = ({fen, setFen, moveHistory,
     const {board, white_pieces, black_pieces} = fenBoard(fen)
 
     initADC(board, white_pieces, black_pieces);
-
-    //console.log(board);
-    //console.log('White Pieces:', white_pieces);
-    //console.log('Black Pieces:', black_pieces);
 
     
     return (
@@ -113,7 +110,6 @@ const GameBoard = ({fen, setFen, moveHistory,
                         //     ? 75 * controlledBy.length 
                         //     : 0;
 
-                    //console.log("red:", red, "green:", green, "blue:", blue)
 
                     return <Square 
                     id={id}
@@ -174,7 +170,8 @@ const Square = styled.div`
     border: 1px solid gray;
     background-color: #181A1B;
     &.black{
-        //background-color: rgb(225,225,225);
+        //disabled
+        //background-color: #111;
     }
 `
 

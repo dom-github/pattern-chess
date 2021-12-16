@@ -36,8 +36,7 @@ const GameInfo = ({moveHistory, setFen}) => {
   
         // split headers and moves
         let parsed = pgn.split(/\n\n/);
-        
-        console.log(parsed)
+    
 
         // I can use some of the headers info maybe
         //const headers = parsed[0]
@@ -89,7 +88,7 @@ const GameInfo = ({moveHistory, setFen}) => {
             if (matches) {
             return undefined
             }
-            console.log('pawn!')
+            
             return 'p'
         }
         piece_type = piece_type.toLowerCase()
@@ -176,20 +175,9 @@ const GameInfo = ({moveHistory, setFen}) => {
                 const target = (alg_to_hex(to))
 
             const origin = determinePiece(board, color, board[target], piece_type, from)
-
-            console.log(
-                "Piece:", piece,
-                "From:", origin,
-                "To:", to,
-                "ToSquare:", target,
-                "Promotion?:", promotion,
-                "Piece (inferred):", piece_type,
-            )
             
             fend = submitMove(board, origin, target, piece_type, color, move, moveHistory, promotion);
             
-            console.log(fend)
-
             board = fenBoard(fend).board
             white_pieces = fenBoard(fend).white_pieces
             black_pieces = fenBoard(fend).black_pieces
@@ -209,9 +197,6 @@ const GameInfo = ({moveHistory, setFen}) => {
                 
                 initADC(board, white_pieces, black_pieces);
     
-                
-
-                console.log("Castling:", clean_move);
             }
 
 
@@ -229,8 +214,6 @@ const GameInfo = ({moveHistory, setFen}) => {
 
         let enPassant = false;
 
-        console.log('piece type:', piece_type, "from:", from)
-
 
         //first check if we are doing a pawn move 
         if (piece_type === 'p' && target.piece === null) {
@@ -240,7 +223,7 @@ const GameInfo = ({moveHistory, setFen}) => {
                 // if our pawn is moving to an empty square, but pawns behind are wrong colour, 
                 // then we must be taking a pawn en passant
                 if (board[testSquare].piece === 'p' && board[testSquare].pieceColor !== color) {
-                    console.log("En Passant!")
+                    
                     enPassant = true;
                     // the captured piece is removed before the board is sent to SubmitMove
                     board[testSquare].piece = null;
@@ -259,7 +242,7 @@ const GameInfo = ({moveHistory, setFen}) => {
             const testPieces = target.controlledBy.filter((piece) => {
                 return (piece.piece.toLowerCase() === piece_type.toLowerCase()) && piece.color === color
             })
-            console.log("One result:", testPieces)
+            
 
             // disambiguate result if there are multiple possible moves
             if (testPieces.length > 1 && from !== undefined) {
@@ -267,14 +250,13 @@ const GameInfo = ({moveHistory, setFen}) => {
                     return algebraic(piece.square).includes(from)
                 })
             result = testPiece.square;
-            console.log("Disambiguated:", testPiece)
+            
             } else {
                 
                 result = testPieces[0].square
             }
         }
     
-        console.log("Matching piece:", result, piece_type)
 
         return result;
 
@@ -292,63 +274,76 @@ const GameInfo = ({moveHistory, setFen}) => {
     // end_time could be used for pagination cursor? 
 
     if (state.status === 'done') {
-        const {data} = state.data
-        console.log(state)
-
         
-                // {data.archives.map((arch) => {
-                //     return <Game
-                //     key={Math.floor(Math.random() * 10000)}
-                //     onClick={
-                //         (ev) => {
-
-                //         }
-                //     }
-                //     >
-                //         {arch.match(/\d+\/\d\d/)}
-                //     </Game>
-                // })}
-                
-
-                    // {data.games.map((game, index) => {
-                    //     return <Game
-                    //     key={index}
-                    //     onClick={
-                    //         () => {
-                    //             console.log(game.pgn)
-                    //             const pgn = lazyPGN(game.pgn);
-                    //             load_pgn(pgn);
-                    //         }
-                    //     }
-                    //     >
-                    //         {game.white.username} vs {game.black.username}
-                    //     </Game>
-                    // })}
 
                     
         return (
             <Info>
                 <Tabs>
-                {/* <Happy 
+                <Happy 
                 className={viewDetails === 'profile' ? 'selected' : ''}
                 onClick={() => {setViewDetails('profile')}}
-                >Profile</Happy>
+                >PROFILE</Happy>
                 <Happy
                 className={viewDetails === 'archive' ? 'selected' : ''}
-                onClick={() => {setViewDetails('archive')}}
-                
-                >Archive</Happy> */}
+                onClick={() => {
+                    setViewDetails('archive')
+                    if (loggedIn !== null) {
+                        setUrl(`https://api.chess.com/pub/player/${loggedIn}/games/archives`)
+                    } else {
+                        setUrl(`/api/db/players`) 
+                    }}}
+                >ARCHIVE</Happy>
+
                 <Happy
-                // className={viewDetails === 'examples' ? 'selected' : ''}
-                // onClick={() => {setViewDetails('examples')}}
+                className={viewDetails === 'examples' ? 'selected' : ''}
+                onClick={() => {
+                    
+                    setUrl(`/api/db/players`)
+                    setViewDetails('examples')
+                }}
                 
-                >Examples</Happy>
+                >EXAMPLES</Happy>
 
                 </Tabs>
-                {viewDetails !== 'profile' && <GamesList>
-                {data.map((player) => {
+                {viewDetails === 'archive' && state.data?.archives && <GamesList>
+                    {state.data.archives.map((arch, index) => {
+                    const yyyymm = arch.match(/\d+\/\d\d/)
+                    return <Game
+                    key={index}
+                    onClick={
+                        () => {
+                            setUrl(`https://api.chess.com/pub/player/${loggedIn}/games/${yyyymm}`)
+                        }
+                    }
+                    >
+                        {yyyymm}
+                    </Game>
+                })}
+                </GamesList>}
+                
+                {viewDetails === 'archive' && state.data?.games && <GamesList>
+                {state.data.games.map((game, index) => {
+                        return <Game
+                        key={index}
+                        onClick={
+                            () => {
+                                
+                                const pgn = lazyPGN(game.pgn);
+                                load_pgn(pgn);
+                            }
+                        }
+                        >
+                            {game.white.username} vs {game.black.username}
+                        </Game>
+                    })}
+                    </GamesList>}
+                
+                {state.data?.data && (viewDetails === 'examples' || (!loggedIn && viewDetails === 'archive')) && <GamesList>
+                {state.data.data.map((player) => {             
                     return player.games.map((game, index) => {
                         return <Game
+                        key={index}
                         onClick={() => {
                             //const pgn = lazyPGN(games[3].pgn)
                             const pgn = lazyPGN(game)
@@ -371,12 +366,16 @@ const GameInfo = ({moveHistory, setFen}) => {
                         <Login
                         onClick={() => {
                             sessionStorage.setItem("currentUser", inputHandle)
+                            setUrl(`https://api.chess.com/pub/player/${inputHandle}/games/archives`) 
                         }}
                         >Log In</Login>}
+                        {loggedIn}
                 </Profile>}
             </Info>
             )
 
+    } else if (state.status === 'error') {
+        return <Info>There doesn't seem to be anything here!</Info>
     } else {
         return <Info>Loading Profile...</Info>
     }
