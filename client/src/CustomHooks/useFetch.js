@@ -49,7 +49,7 @@ const [state, dispatch] = useReducer((state, action) => {
         const fetchData = async () => {
             dispatch({ type: 'FETCHING' });
             if (cache.current[url]) {
-                
+                console.log("fetching cached datatata!")
                 const data = cache.current[url];
                 dispatch({type: 'FETCHED', payload: data})
             } else {

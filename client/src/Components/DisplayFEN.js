@@ -1,11 +1,13 @@
 import { useState } from "react";
 import styled from "styled-components";
+import { startingPosition } from "../Constants/constants";
 
-const DisplayFEN = ({fen, setFen, start}) => {
+const DisplayFEN = ({fen, setFen}) => {
 
     const [input, setInput] = useState(fen);
 
     const boardInits = [
+        "new",
         "start",
         "chess",
         "standard",
@@ -32,7 +34,6 @@ const DisplayFEN = ({fen, setFen, start}) => {
         const rows = fenTokens[0].split('/')
 
         if (rows.length !== 8) {
-            console.log("wrong number of rows!")
             validate = false;
         }
 
@@ -45,7 +46,6 @@ const DisplayFEN = ({fen, setFen, start}) => {
             for (let j = 0; j < rows[i].length; j++) {
                 if (!isNaN(rows[i][j])) {
                     if (previous_was_number) {
-                        console.log("wrong numbas!")
                         validate = false;
                     }
 
@@ -55,7 +55,6 @@ const DisplayFEN = ({fen, setFen, start}) => {
                 } else {
 
                     if (!/^[prnbqkPRNBQK]$/.test(rows[i][j])) {
-                        console.log("wrong letters!")
                         validate = false;
                     }
 
@@ -64,7 +63,6 @@ const DisplayFEN = ({fen, setFen, start}) => {
                 }
             }
             if (sum !== 8) {
-                console.log("one row ain't eight!")
                 validate = false;
             }
         }
@@ -76,16 +74,17 @@ const DisplayFEN = ({fen, setFen, start}) => {
     type={'text'}
     value={validateFEN(input) ? fen : input}
     onChange={(ev) => {
-            console.log(ev.target.value)
             setInput(ev.target.value);
         if (validateFEN(ev.target.value)) {
-            console.log("Nice FEN, fren!")
             setFen(ev.target.value);
         } else if (boardInits.includes(ev.target.value, 0)) {
-            setFen(start);
-            setInput(start);
+            setFen(startingPosition);
+            setInput(startingPosition);
         } else if (boardCurrents.includes(ev.target.value, 0)) {
             setInput(fen);
+        } else if (ev.target.value === 'blank' || ev.target.value === 'empty') {
+            setFen("8/8/8/8/8/8/8/8")
+            setInput("8/8/8/8/8/8/8/8");
         }
 
         }
@@ -96,10 +95,11 @@ const DisplayFEN = ({fen, setFen, start}) => {
 
 const Fen = styled.input`
     margin-top: 20px;
-    width: 400px;
-    border: 1px solid black;
+    width: 24vw;
+    min-width: 200px;
+    border: 1px solid gray;
     border-radius: 10px;
-    padding: 20px;
+    padding: 10px 20px;
 `
 
 export default DisplayFEN;
