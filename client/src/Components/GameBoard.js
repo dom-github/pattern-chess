@@ -123,7 +123,7 @@ const GameBoard = ({
                     ><Piece
                             id={id}
                             onClick={clickSquare}
-                            src={piece ? `./assets/pieceslisa/${piece}${color}.png` : `./assets/pieces/em.png`}
+                            src={piece ? `./assets/pieces/${piece}${color}.png` : `./assets/pieces/em.png`}
                             className={
                                 isSelected === true
                                 ? 'selected'

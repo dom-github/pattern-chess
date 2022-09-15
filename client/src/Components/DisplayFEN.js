@@ -95,7 +95,7 @@ const DisplayFEN = ({fen, setFen}) => {
 
 const Fen = styled.input`
     margin-top: 20px;
-    width: 24vw;
+    width: 25vw;
     min-width: 200px;
     border: 1px solid gray;
     border-radius: 10px;

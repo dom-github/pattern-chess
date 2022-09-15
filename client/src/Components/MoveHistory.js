@@ -51,7 +51,7 @@ const MoveHistory = ({moveHistory, setFen}) => {
 const Wrapper = styled.div`
 padding: 20px 40px;
     margin-top: 20px;
-    border: 2px solid black;
+    border: 2px solid whitesmoke;
     width: 25vw;
     height: auto;
     min-width: 100px;
