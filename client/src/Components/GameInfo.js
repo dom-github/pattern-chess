@@ -273,7 +273,7 @@ const GameInfo = ({moveHistory, setFen}) => {
     // uuid is included 
     // end_time could be used for pagination cursor? 
 
-    if (state.status === 'done') {
+    if (1===1) {
         
 
                     

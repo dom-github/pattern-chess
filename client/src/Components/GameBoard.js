@@ -8,7 +8,24 @@ import { fenBoard } from "../Functions/fenBoard";
 import { submitMove } from "../Functions/submitMove";
 import { algebraic } from "../Functions/utils";
 
+import empty from '../assets/pieceslisa/em.png';
+//why must I suffer
+import  bb  from '../assets/pieceslisa/bb.png';
+import  bw  from '../assets/pieceslisa/bw.png';
+import  kb  from '../assets/pieceslisa/kb.png';
+import  kw  from '../assets/pieceslisa/kw.png';
+import  nb  from '../assets/pieceslisa/nb.png';
+import  nw  from '../assets/pieceslisa/nw.png';
+import  pb  from '../assets/pieceslisa/pb.png';
+import  pw  from '../assets/pieceslisa/pw.png';
+import  qb  from '../assets/pieceslisa/qb.png';
+import  qw  from '../assets/pieceslisa/qw.png';
+import  rb  from '../assets/pieceslisa/rb.png';
+import  rw  from '../assets/pieceslisa/rw.png';
 
+//workaround to package images in React instead of serving thru public folder
+const pieceImages = [bb, bw, kb, kw, nb, nw, pb, pw, qb, qw, rb, rw];
+const pieceStrings = ["bb", "bw", "kb", "kw", "nb", "nw", "pb", "pw", "qb", "qw", "rb", "rw"];
 //import { parsePGN, loadPGN, move_from_san } from "../Functions/parsePGN";
 
 //rendering the basic game board 
@@ -109,7 +126,7 @@ const GameBoard = ({
                         //     || enemyControl.length === 0) 
                         //     ? 75 * controlledBy.length 
                         //     : 0;
-
+                    const img = pieceStrings.indexOf(`${piece}${color}`)
 
                     return <Square 
                     id={id}
@@ -122,8 +139,8 @@ const GameBoard = ({
                     }
                     ><Piece
                             id={id}
-                            onClick={clickSquare}
-                            src={piece ? `./assets/pieces/${piece}${color}.png` : `./assets/pieces/em.png`}
+                            onClick={clickSquare} 
+                            src={piece ? pieceImages[img] : empty}
                             className={
                                 isSelected === true
                                 ? 'selected'
