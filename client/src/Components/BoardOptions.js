@@ -19,9 +19,12 @@ const BoardOptions = ({
 const Options = styled.div`
     border: 1px solid whitesmoke;
     margin-top: 20px;
+    
+    width: 95%;
+  @media (min-width: 1280px) {
     width: 25vw;
     height: auto;
-    min-width: 200px;
+  }
     min-height: 100px;
     padding: 10px 20px;
 `

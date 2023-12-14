@@ -34,11 +34,12 @@ const MoveHistory = ({moveHistory, setFen}) => {
                     const comma = (index + 1) === moveHistory.current.length ? '' : ", "
                     const space = "\u00A0";
 
+                    const number = index % 2 === 0 ? `${(index / 2) + 1}. ` : '';
                     return <Move 
                         key={index}
                         onClick={() => {
                             setFen(fen)
-                        }}>{pieceChar}{san}{comma}{space}</Move>
+                        }}>{number}{pieceChar}{san}</Move>
                 })}
             </Moves>
         </Wrapper>
@@ -52,20 +53,29 @@ const Wrapper = styled.div`
 padding: 20px 40px;
     margin-top: 20px;
     border: 2px solid whitesmoke;
+    
+    width: 95%;
+  @media (min-width: 1280px) {
     width: 25vw;
     height: auto;
-    min-width: 100px;
+  }
     min-height: 200px;
     text-align: center;
-    text-decoration: underline;
 `
 
 const Moves = styled.div`
     text-decoration: none;
+    max-height: 25vh;
+    overflow-y: scroll;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
 
 `
 const Move = styled.span`
-    display: inline-block;
+    width: 50%;
+    display: flex;
+    justify-content: left;
     text-decoration: none;
     cursor: pointer;
 

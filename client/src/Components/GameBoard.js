@@ -59,6 +59,8 @@ const GameBoard = ({
 
     initADC(board, white_pieces, black_pieces);
 
+    let whtScore = 0;
+    let blkScore = 0;
     
     return (
         <InfoWrapper>
@@ -92,17 +94,18 @@ const GameBoard = ({
                             })
                          ? true : false;
                     //
-
                     const allyControl = controlledBy.filter(x => x.color === 'w')
                     const enemyControl = controlledBy.filter(x => x.color === 'b')
-
                     
-                    const alpha = 0.15 * ((allyControl.length * showWhtCtrl) + (enemyControl.length * showBlkCtrl)) * multiplier;
+                    const alpha = 0.33 //0.15 * ((allyControl.length * showWhtCtrl) + (enemyControl.length * showBlkCtrl)) * multiplier;
                     const importance = 5 * ((allyControl.length * showWhtCtrl) + (enemyControl.length * showBlkCtrl));
                     const blue = ((allyControl?.length * 100) * multiplier * showWhtCtrl);
                     const red = ((enemyControl?.length * 100) * multiplier * showBlkCtrl);
+                    whtScore += blue;
+                    blkScore += red;
+                    console.log("White:", whtScore, "Black:", blkScore)
                     // green value is set only for uncontested squares 
-                    const green = 35;
+                    const green = 15;
                         // controlledBy 
                         // && square.piece === null
                         // && (allyControl.length === 0 
@@ -116,14 +119,15 @@ const GameBoard = ({
                     key={rank}
                     className={
                         (findex % 2 === 0 && rindex % 2 === 0)
-                        || (findex % 2 !== 0 && rindex % 2 !== 0)
+                        || (findex % 2 !== 0 && rindex % 2 !== 0) 
+                        || (showBlkCtrl || showWhtCtrl)
                         ? 'white'
                         : 'black'
                     }
                     ><Piece
                             id={id}
                             onClick={clickSquare}
-                            src={piece ? `./assets/pieces/${piece}${color}.png` : `./assets/pieces/em.png`}
+                            src={piece ? `./assets/pieceslisa/${piece}${color}.png` : `./assets/pieceslisa/em.png`}
                             className={
                                 isSelected === true
                                 ? 'selected'
@@ -157,21 +161,29 @@ const Wrapper = styled.div`
     align-items: center;
 `
 const InfoWrapper = styled.div`
+    width: 95vw;
+    height: 95vw;
+    max-height: 900px;
+    padding-right: 5vw;
+    @media (min-width: 1280px) {
     width: 60vw;
     height: 98vh;
+    }
 `
 
 const Square = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 100px;
-    height: 100px;
+    width: 10vw;
+    height: 10vw;
+    max-width: 100px;
+    max-height: 100px;
     border: 1px solid gray;
     background-color: #181A1B;
     &.black{
         //disabled
-        //background-color: #111;
+        background-color: #333;
     }
 `
 
@@ -179,6 +191,8 @@ const Piece = styled.img`
     position: absolute;
     width: inherit;
     height: inherit;
+    max-width: 100px;
+    max-height: 100px;
     &.selected{
         
         box-shadow: 0 0 10px 0 yellow;
@@ -193,30 +207,37 @@ const Ranks = styled.div`
 const Rank = styled.div`
     text-align: center;
     align-items: center;
-    height: 100px;
-    width: 20px;
+    width: 10vw;
+    height: 10vw;
+    max-width: 100px;
+    max-height: 100px;
     position: relative;
-    top: 50px;
+    top: 5vh;
 `
 
 const Files = styled.div`
     display: flex;
     flex-direction: row;
-    width: 60vw;
+    
+    width: 100%;
+    @media (min-width: 1280px) {
+        width: 60vw;
+    }
     justify-content: center;
 `
 const File = styled.div`
     display: flex;
     justify-content: center;
-    width: 100px;
-    height: 20px;
+    width: 10vw;
+    height: 10vw;
+    max-width: 100px;
+    max-height: 100px;
     position: relative;
     left: 5px;
     top: 5px;
 `
 const Board = styled.div`
 margin-top: 20px;
-
 `
 
 export default GameBoard;

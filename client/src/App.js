@@ -50,18 +50,24 @@ function App() {
 const Page = styled.div`
   margin: 0;
   margin-top: 40px;
+  width: 96vw;
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   justify-content: center;
+  @media (min-width: 1280px) {
+    flex-direction: row;
+    justify-content: space-around;
+  }
   background-color: #181A1B;
   color: whitesmoke;
 `
 const Info = styled.div`
   margin: 0;
   margin-top: 25px;
+  margin-left: 10px;
   display: flex;
   flex-direction: column;
-  position: relative;
+  justify-content: center;
   font-size: larger;
 `
 

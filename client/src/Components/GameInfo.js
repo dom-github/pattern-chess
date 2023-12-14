@@ -6,6 +6,7 @@ import { pawn_moves, startingPosition } from "../Constants/constants";
 import { initADC } from "../Functions/ADC";
 import { algebraic, alg_to_hex, stripped_san, trim } from "../Functions/utils";
 import { useState } from "react";
+import { players } from "../data/Players";
 
 
 const GameInfo = ({moveHistory, setFen}) => {
@@ -15,7 +16,7 @@ const GameInfo = ({moveHistory, setFen}) => {
 
     const loggedIn = sessionStorage.getItem("currentUser") 
     
-    const [url, setUrl] = useState('/api/db/players')
+    const [url, setUrl] = useState()
 
     const {state} = useFetch(url)
 
@@ -273,7 +274,8 @@ const GameInfo = ({moveHistory, setFen}) => {
     // uuid is included 
     // end_time could be used for pagination cursor? 
 
-    if (state.status === 'done') {
+    //DB connectivity disabled for static site
+    if (1===1) {
         
 
                     
@@ -291,7 +293,7 @@ const GameInfo = ({moveHistory, setFen}) => {
                     if (loggedIn !== null) {
                         setUrl(`https://api.chess.com/pub/player/${loggedIn}/games/archives`)
                     } else {
-                        setUrl(`/api/db/players`) 
+                        setUrl() 
                     }}}
                 >ARCHIVE</Happy>
 
@@ -299,7 +301,7 @@ const GameInfo = ({moveHistory, setFen}) => {
                 className={viewDetails === 'examples' ? 'selected' : ''}
                 onClick={() => {
                     
-                    setUrl(`/api/db/players`)
+                    setUrl()
                     setViewDetails('examples')
                 }}
                 
@@ -307,7 +309,7 @@ const GameInfo = ({moveHistory, setFen}) => {
 
                 </Tabs>
                 {viewDetails === 'archive' && state.data?.archives && <GamesList>
-                    {state.data.archives.map((arch, index) => {
+                    {state.data.archives.toReversed().map((arch, index) => {
                     const yyyymm = arch.match(/\d+\/\d\d/)
                     return <Game
                     key={index}
@@ -339,8 +341,9 @@ const GameInfo = ({moveHistory, setFen}) => {
                     })}
                     </GamesList>}
                 
-                {state.data?.data && (viewDetails === 'examples' || (!loggedIn && viewDetails === 'archive')) && <GamesList>
-                {state.data.data.map((player) => {             
+                {(viewDetails === 'examples' || (!loggedIn && viewDetails === 'archive')) && <GamesList>
+                {players.map((player) => {    
+                    //no longer uses external DB 
                     return player.games.map((game, index) => {
                         return <Game
                         key={index}
@@ -388,25 +391,28 @@ padding: 5px;
 `
 const Handle = styled.input`
     padding: 10px;
+  @media (min-width: 1280px) {
     width: 15vw;
     height: 1vh;
-    min-width: 150px;
-    min-height: 30px;
+  }
 `
 
 const Profile = styled.div`
     padding: 10px;
+  @media (min-width: 1280px) {
     width: 23vw;
     height: 16vh;
-    min-width: 190px;
-    min-height: 50px;
+  }
 `
 
 const Tabs = styled.div`
-    width: 100%;
+    width: 95%;
     display: flex;
+    flex-direction: column;
+  @media (min-width: 1280px) {
     flex-direction: row;
     justify-content: space-between;
+  }
 `
 
 //have a happy time
@@ -422,8 +428,6 @@ const Happy = styled.button`
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 7vw;
-    height: 20px;
     border-bottom: 1px solid gray;
     background-color: #181A1B;
     border-radius: 15%;
@@ -439,18 +443,24 @@ const Info = styled.div`
     flex-direction: column;
     border: 1px solid gray;
     padding: 10px;
+    width: 95%;
+  @media (min-width: 1280px) {
+    
     width: 25vw;
     height: 25vh;
-    min-width: 200px;
-    min-height: 100px;
+  }
+    min-height: 200px;
 `
 
 const GamesList = styled.div`
     background-color: #555;
     padding: 10px;
+
+    width: 95%;    
+  @media (min-width: 1280px) {
     width: 23vw;
+  }
     height: 16vh;
-    min-width: 190px;
     min-height: 50px;
     overflow-y: scroll;
 `
